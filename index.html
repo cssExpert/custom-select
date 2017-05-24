@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Custom jQuery Select</title>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css" />
+<link type="text/css" rel="stylesheet" href="css/default.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="eds__drop">    
+        <select name="options">
+            <option value="en" style="background-image:url('images/flags/4x3/es.svg');">English</option>
+            <option value="fr" style="background-image:url('images/flags/4x3/fr.svg');">French</option>
+            <option value="nl" style="background-image:url('images/flags/4x3/nl.svg');">Nederlands</option>
+            <option value="in" style="background-image:url('images/flags/4x3/in.svg');">India</option>
+            <option value="lk" style="background-image:url('images/flags/4x3/lk.svg');">Srilanka</option>
+            <option value="pk" style="background-image:url('images/flags/4x3/pk.svg');">Pakistan</option>
+            <option value="nz" style="background-image:url('images/flags/4x3/nz.svg');">New Zealand</option>
+        </select>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+jQuery().ready(function() {
+    /* Custom select design */
+    jQuery('.eds__drop').append('<div class="button"></div>');
+    jQuery('.eds__drop').append('<ul class="select-list"></ul>');
+    jQuery('.eds__drop select option').each(function() {
+        var bg = jQuery(this).css('background-image');
+        jQuery('.select-list').append('<li class="clsAnchor"><span value="' + jQuery(this).val() + '" class="' + jQuery(this).attr('class') + '" style=background-image:' + bg + '>' + jQuery(this).text() + '</span></li>');
+    });
+    jQuery('.eds__drop .button').html('<span style=background-image:' + jQuery('.eds__drop select').find(':selected').css('background-image') + '>' + jQuery('.eds__drop select').find(':selected').text() + '</span>' + '<a href="javascript:void(0);" class="select-list-link"><i class="fa fa-angle-down"></i></a>');
+    jQuery('.eds__drop ul li').each(function() {
+        if (jQuery(this).find('span').text() == jQuery('.eds__drop select').find(':selected').text()) {
+            jQuery(this).addClass('active');
+        }
+    });
+    jQuery('.eds__drop .select-list span').on('click', function() {
+        var dd_text = jQuery(this).text();
+        var dd_img = jQuery(this).css('background-image');
+        var dd_val = jQuery(this).attr('value');
+        jQuery('.eds__drop .button').html('<span style=background-image:' + dd_img + '>' + dd_text + '</span>' + '<a href="javascript:void(0);" class="select-list-link"><i class="fa fa-angle-down"></i></a>');
+        jQuery('.eds__drop .select-list span').parent().removeClass('active');
+        jQuery(this).parent().addClass('active');
+        $('.eds__drop select[name=options]').val(dd_val);
+        $('.eds__drop .select-list li').slideUp();
+    });
+    jQuery('.eds__drop .button').on('click', 'a.select-list-link', function() {
+        jQuery('.eds__drop ul li').slideToggle();
+    });
+    /* End */
+});
+</script>
+</body>
+</html>
